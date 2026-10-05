@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurotrip Food Guide</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --accent: #f59e0b;
+            --subtext: #94a3b8;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 16px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        p.subtitle {
+            color: var(--subtext);
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input, select {
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            color: var(--text);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .badge {
+            background-color: #3b82f6;
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .badge-budget {
+            background-color: #10b981;
+        }
+        .city {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        .note {
+            color: var(--subtext);
+            font-size: 14px;
+            margin: 12px 0;
+            line-height: 1.4;
+        }
+        .btn-maps {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background-color: #e11d48;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🥐 Eurotrip Food Guide</h1>
+    <p class="subtitle">Tus recomendaciones gastronómicas en Europa</p>
+
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="Buscar por nombre o nota..." oninput="filterSpots()">
+        <select id="cityFilter" onchange="filterSpots()">
+            <option value="">Todas las ciudades</option>
+            <option value="París">París</option>
+            <option value="Lyon">Lyon</option>
+            <option value="Barcelona">Barcelona</option>
+            <option value="Madrid">Madrid</option>
+        </select>
+    </div>
+
+    <div class="grid" id="spotsGrid"></div>
+
+    <script>
+        const spots = [
+            {
+                name: "L'As du Fallafel",
+                city: "París",
+                budget: "Mochilero (€10-15)",
+                type: "Street Food",
+                note: "El falafel más famoso en el barrio Le Marais. Imperdible.",
+                maps: "https://maps.google.com/?q=L'As+du+Fallafel+Paris"
+            },
+            {
+                name: "Café de Flore",
+                city: "París",
+                budget: "Medio (€20-30)",
+                type: "Cafetería / Tradicional",
+                note: "Un clásico histórico para tomar un café y croissant con gran ambiente.",
+                maps: "https://maps.google.com/?q=Cafe+de+Flore+Paris"
+            },
+            {
+                name: "Bouchon Comptoir Brunet",
+                city: "Lyon",
+                budget: "Medio (€25-35)",
+                type: "Comida Tradicional",
+                note: "Comida auténtica lionesa en un ambiente clásico e íntimo.",
+                maps: "https://maps.google.com/?q=Comptoir+Brunet+Lyon"
+            }
+        ];
+
+        function renderSpots(data) {
+            const container = document.getElementById('spotsGrid');
+            container.innerHTML = '';
+            
+            if(data.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color: var(--subtext);">No se encontraron lugares.</p>';
+                return;
+            }
+
+            data.forEach(spot => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">${spot.name}</h2>
+                            <div class="city">📍 ${spot.city} • ${spot.type}</div>
+                        </div>
+                        <span class="badge badge-budget">${spot.budget}</span>
+                    </div>
+                    <p class="note">${spot.note}</p>
+                    <a href="${spot.maps}" target="_blank" class="btn-maps">🗺️ Abrir en Google Maps</a>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterSpots() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const city = document.getElementById('cityFilter').value;
+
+            const filtered = spots.filter(s => {
+                const matchesSearch = s.name.toLowerCase().includes(search) || s.note.toLowerCase().includes(search);
+                const matchesCity = city === "" || s.city === city;
+                return matchesSearch && matchesCity;
+            });
+
+            renderSpots(filtered);
+        }
+
+        renderSpots(spots);
+    </script>
+</body>
+</html>
