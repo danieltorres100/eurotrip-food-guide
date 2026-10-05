@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eurotrip Food Guide</title>
+    <title>Eurotrip Food Budget Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-orange: #f59e0b;
-            --border-color: #334155;
-            --badge-green: #10b981;
-            --badge-purple: #8b5cf6;
-            --button-red: #e11d48;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --card-inner: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --accent-blue: #3b82f6;
+            --border-color: #333333;
+            --tag-green-bg: rgba(16, 185, 129, 0.2);
+            --tag-green-text: #10b981;
+            --tag-red-bg: rgba(239, 68, 68, 0.2);
+            --tag-red-text: #ef4444;
         }
 
         * {
@@ -24,489 +27,468 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
             padding: 16px;
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
-        .header {
-            margin-bottom: 16px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .header p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .sticky-search {
-            position: sticky;
-            top: 0;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(8px);
-            padding: 8px 0 12px 0;
-            z-index: 50;
-        }
-
-        .search-box, .select-box {
-            width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            padding: 12px 14px;
-            border-radius: 12px;
-            font-size: 14px;
-            outline: none;
-            margin-bottom: 8px;
-        }
-
-        .search-box::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .trails-label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-secondary);
-            margin: 8px 0 6px 0;
-        }
-
-        .trail-chips {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            padding-bottom: 4px;
-        }
-
-        .trail-chips::-webkit-scrollbar {
-            display: none;
-        }
-
-        .chip {
-            background-color: var(--border-color);
-            color: var(--text-primary);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            white-space: nowrap;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-
-        .chip.active {
-            background-color: var(--accent-orange);
-            color: #0f172a;
-            font-weight: 700;
-        }
-
-        .cards-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-top: 12px;
-        }
-
-        .card {
+        .control-panel {
             background-color: var(--card-bg);
             border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
             border: 1px solid var(--border-color);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
-        .card-image {
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+        .field-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        select {
             width: 100%;
-            height: 160px;
-            object-fit: cover;
-            background-color: #334155;
+            background-color: var(--card-inner);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
         }
 
-        .card-content {
-            padding: 16px;
-        }
-
-        .card-top {
+        .slider-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .badge-group {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 10px;
-            color: #ffffff;
-        }
-
-        .badge-score { background-color: var(--badge-purple); }
-        .badge-budget { background-color: var(--badge-green); }
-
-        .card-city {
-            color: var(--accent-orange);
-            font-size: 13px;
-            font-weight: 600;
+            align-items: center;
             margin-bottom: 10px;
         }
 
-        .card-description {
-            color: #cbd5e1;
-            font-size: 14px;
-            line-height: 1.45;
-            margin-bottom: 14px;
+        .slider-value {
+            font-size: 16px;
+            font-weight: 700;
+            background-color: var(--card-inner);
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
         }
 
-        .btn-maps {
-            display: block;
+        input[type="range"] {
             width: 100%;
-            background-color: var(--button-red);
-            color: #ffffff;
-            text-align: center;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 10px;
+            height: 6px;
+            background: #444;
+            border-radius: 3px;
+            outline: none;
+            accent-color: #ffffff;
+        }
+
+        .chips-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            background-color: var(--card-inner);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            border-radius: 20px;
             font-size: 13px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .chip.active {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .metric-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-title {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            line-height: 1.2;
             font-weight: 700;
         }
 
-        .no-results {
-            text-align: center;
+        .metric-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .chart-panel {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-title {
+            font-size: 12px;
+            font-weight: 700;
             color: var(--text-secondary);
-            padding: 30px 0;
-            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .section-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .spots-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .spot-card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--border-color);
+            position: relative;
+        }
+
+        .spot-card.within-budget {
+            border-left-color: var(--tag-green-text);
+        }
+
+        .spot-card.exceeds-budget {
+            border-left-color: var(--tag-red-text);
+        }
+
+        .spot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
+        .spot-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .budget-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .budget-tag.within {
+            background-color: var(--tag-green-bg);
+            color: var(--tag-green-text);
+        }
+
+        .budget-tag.exceeds {
+            background-color: var(--tag-red-bg);
+            color: var(--tag-red-text);
+        }
+
+        .spot-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .spot-sub .rating {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .spot-desc {
+            font-size: 13px;
+            color: #dddddd;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .spot-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .spot-price {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .spot-impact {
+            font-size: 12px;
+            color: var(--text-secondary);
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>🥐 Eurotrip Food Guide</h1>
-        <p>Bite Europe • Recomendaciones y Food Trails</p>
-    </div>
+    <div class="control-panel">
+        <div class="field-group">
+            <label class="field-label">Ciudad de destino</label>
+            <select id="citySelect" onchange="updateApp()">
+                <option value="Barcelona">Barcelona (España)</option>
+                <option value="París">París (Francia)</option>
+                <option value="Lyon">Lyon (Francia)</option>
+                <option value="Bologna">Bolonia (Italia)</option>
+                <option value="Roma">Roma (Italia)</option>
+                <option value="San Sebastián">San Sebastián (España)</option>
+                <option value="Madrid">Madrid (España)</option>
+            </select>
+        </div>
 
-    <div class="sticky-search">
-        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Buscar ciudad, platillo o lugar..." oninput="filterData()">
-        
-        <select id="citySelect" class="select-box" onchange="filterData()">
-            <option value="">🌍 Todas las ciudades de Europa</option>
-            <option value="París">París 🇫🇷</option>
-            <option value="Lyon">Lyon 🇫🇷</option>
-            <option value="Ginebra">Ginebra 🇨🇭</option>
-            <option value="Bruselas">Bruselas 🇧🇪</option>
-            <option value="Brujas">Brujas 🇧🇪</option>
-            <option value="Roma">Roma 🇮🇹</option>
-            <option value="Bologna">Bolonia 🇮🇹</option>
-            <option value="Florencia">Florencia 🇮🇹</option>
-            <option value="Milán">Milán 🇮🇹</option>
-            <option value="Venecia">Venecia 🇮🇹</option>
-            <option value="Barcelona">Barcelona 🇪🇸</option>
-            <option value="Madrid">Madrid 🇪🇸</option>
-            <option value="San Sebastián">Donostia-San Sebastián 🇪🇸</option>
-            <option value="Praga">Praga 🇨🇿</option>
-            <option value="Budapest">Budapest 🇭🇺</option>
-            <option value="Zagreb">Zagreb 🇭🇷</option>
-            <option value="Dubrovnik">Dubrovnik 🇭🇷</option>
-        </select>
+        <div class="field-group">
+            <div class="slider-header">
+                <label class="field-label" style="margin-bottom: 0;">Presupuesto máx. por plato</label>
+                <span class="slider-value" id="budgetValue">30 €</span>
+            </div>
+            <input type="range" id="budgetSlider" min="5" max="80" value="30" oninput="updateApp()">
+        </div>
 
-        <div class="trails-label">TRY A FOOD TRAIL</div>
-        <div class="trail-chips">
-            <div class="chip active" onclick="setTrail(this, '')">Todos</div>
-            <div class="chip" onclick="setTrail(this, 'Fresh Pasta')">🍝 Fresh Pasta</div>
-            <div class="chip" onclick="setTrail(this, 'Warm Pastries')">🥐 Warm Pastries</div>
-            <div class="chip" onclick="setTrail(this, 'Pintxos & Tapas')">🍢 Pintxos & Tapas</div>
-            <div class="chip" onclick="setTrail(this, 'Wine & Bites')">🍷 Wine & Bites</div>
-            <div class="chip" onclick="setTrail(this, 'Street Food')">🥙 Street Food</div>
-            <div class="chip" onclick="setTrail(this, 'Local Classics')">🍲 Local Classics</div>
+        <div class="field-group" style="margin-bottom: 0;">
+            <label class="field-label">Estilo gastronómico</label>
+            <div class="chips-grid">
+                <div class="chip active" onclick="setStyle(this, 'Todos')">Todos</div>
+                <div class="chip" onclick="setStyle(this, 'Local / Tradicional')">Local / Tradicional</div>
+                <div class="chip" onclick="setStyle(this, 'Callejero / Rápido')">Callejero / Rápido</div>
+                <div class="chip" onclick="setStyle(this, 'Bistró / Casual')">Bistró / Casual</div>
+                <div class="chip" onclick="setStyle(this, 'Alta Cocina')">Alta Cocina</div>
+            </div>
         </div>
     </div>
 
-    <div class="cards-container" id="cardsContainer"></div>
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-title">OPCIONES ACCESIBLES</div>
+            <div class="metric-value" id="accessibleCount">0/0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">COSTE MEDIO EN RANGO</div>
+            <div class="metric-value" id="avgCost">0 €</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">IMPACTO DIARIO EST.</div>
+            <div class="metric-value" id="dailyImpact">0 €/día</div>
+        </div>
+    </div>
+
+    <div class="chart-panel">
+        <div class="chart-title">COMPARATIVA DE COSTES POR LOCAL VS PRESUPUESTO</div>
+        <canvas id="costChart" height="130"></canvas>
+    </div>
+
+    <div class="section-header">LUGARES RECOMENDADOS</div>
+
+    <div class="spots-list" id="spotsList"></div>
 
     <script>
-        let selectedTrail = '';
+        let selectedStyle = 'Todos';
+        let chartInstance = null;
 
-        const foodData = [
-            {
-                name: "L As du Fallafel",
-                city: "París",
-                trail: "Street Food",
-                budget: "Mochilero (€10-15)",
-                score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?auto=format&fit=crop&w=600&q=80",
-                note: "Barrio Le Marais. El falafel en pita legendario. Imperdible en París.",
-                maps: "https://maps.google.com/?q=L'As+du+Fallafel+Paris"
-            },
-            {
-                name: "Du Pain et des Idees",
-                city: "París",
-                trail: "Warm Pastries",
-                budget: "Económico (€4-8)",
-                score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80",
-                note: "Canal Saint-Martin. Panadería artesanal famosa por su Escargot de pistache y chocolate.",
-                maps: "https://maps.google.com/?q=Du+Pain+et+des+Idees+Paris"
-            },
-            {
-                name: "Bouillon Chartier",
-                city: "París",
-                trail: "Local Classics",
-                budget: "Económico (€15-22)",
-                score: "★ 4.6",
-                img: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80",
-                note: "Grands Boulevards. Bistró histórico Belle Époque con comida tradicional a precios accesibles.",
-                maps: "https://maps.google.com/?q=Bouillon+Chartier+Paris"
-            },
-            {
-                name: "Bouchon Comptoir Brunet",
-                city: "Lyon",
-                trail: "Wine & Bites",
-                budget: "Medio (€25-35)",
-                score: "★ 4.8",
-                img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-                note: "Presqu ile. Bouchon clásico liones. Quenelles de brochet y gran selección de vinos.",
-                maps: "https://maps.google.com/?q=Comptoir+Brunet+Lyon"
-            },
-            {
-                name: "La Marquise",
-                city: "Lyon",
-                trail: "Warm Pastries",
-                budget: "Económico (€5-10)",
-                score: "★ 4.8",
-                img: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80",
-                note: "Vieux Lyon. El lugar para probar la tradicional Praluline (brioche con pralinés rosas).",
-                maps: "https://maps.google.com/?q=La+Marquise+Vieux+Lyon"
-            },
-            {
-                name: "Les Armures",
-                city: "Ginebra",
-                trail: "Local Classics",
-                budget: "Medio (€35-50)",
-                score: "★ 4.7",
-                img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80",
-                note: "Vieille Ville. La mejor fondue suiza tradicional de queso gruyère y vacherin.",
-                maps: "https://maps.google.com/?q=Les+Armures+Geneva"
-            },
-            {
-                name: "Maison Dandoy",
-                city: "Bruselas",
-                trail: "Warm Pastries",
-                budget: "Económico (€6-12)",
-                score: "★ 4.8",
-                img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=600&q=80",
-                note: "Cerca de Grand Place. Los auténticos waffles belgas artesanales.",
-                maps: "https://maps.google.com/?q=Maison+Dandoy+Brussels"
-            },
-            {
-                name: "Fritland",
-                city: "Bruselas",
-                trail: "Street Food",
-                budget: "Mochilero (€5-9)",
-                score: "★ 4.6",
-                img: "https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=600&q=80",
-                note: "Centro. Papas fritas belgas con salsa andaluza y la famosa Mitraillette.",
-                maps: "https://maps.google.com/?q=Fritland+Brussels"
-            },
-            {
-                name: "Osteria da Fortunata",
-                city: "Roma",
-                trail: "Fresh Pasta",
-                budget: "Medio (€15-25)",
-                score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1621996346565-e3d5d6281288?auto=format&fit=crop&w=600&q=80",
-                note: "Campo de Fiori. Pasta hecha a mano en el momento. Carbonara y Amatriciana brutales.",
-                maps: "https://maps.google.com/?q=Osteria+da+Fortunata+Roma"
-            },
-            {
-                name: "All Antico Vinaio",
-                city: "Roma",
-                trail: "Street Food",
-                budget: "Mochilero (€8-12)",
-                score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80",
-                note: "Cerca del Panteón. Schiacciata toscana gigante rellena de pistache y porchetta.",
-                maps: "https://maps.google.com/?q=Antico+Vinaio+Roma"
-            },
-            {
-                name: "Osteria dell Orsa",
-                city: "Bologna",
-                trail: "Fresh Pasta",
-                budget: "Mochilero (€12-18)",
-                score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80",
-                note: "Zona Universitaria. Tagliatelle al Ragù boloñés de receta tradicional.",
-                maps: "https://maps.google.com/?q=Osteria+dell'Orsa+Bologna"
-            },
-            {
-                name: "Trattoria Za Za",
-                city: "Florencia",
-                trail: "Local Classics",
-                budget: "Medio (€25-40)",
-                score: "★ 4.8",
-                img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80",
-                note: "Piazza del Mercato Centrale. El templo de la Bistecca alla Fiorentina.",
-                maps: "https://maps.google.com/?q=Trattoria+ZaZa+Florence"
-            },
-            {
-                name: "Bar Ganbara",
-                city: "San Sebastián",
-                trail: "Pintxos & Tapas",
-                budget: "Medio (€20-35)",
-                score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80",
-                note: "Parte Vieja. Hongos silvestres con yema de huevo y hojaldres de chistorra.",
-                maps: "https://maps.google.com/?q=Bar+Ganbara+San+Sebastian"
-            },
-            {
-                name: "La Viña",
-                city: "San Sebastián",
-                trail: "Warm Pastries",
-                budget: "Económico (€6-10)",
-                score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80",
-                note: "Parte Vieja. Cuna original de la famosa Tarta de Queso Vasca horneada.",
-                maps: "https://maps.google.com/?q=La+Vina+San+Sebastian"
-            },
-            {
-                name: "El Xampanyet",
-                city: "Barcelona",
-                trail: "Pintxos & Tapas",
-                budget: "Económico (€15-25)",
-                score: "★ 4.8",
-                img: "https://images.unsplash.com/photo-1515443961218-a51367888e4b?auto=format&fit=crop&w=600&q=80",
-                note: "El Born. Anchoas de la escala, pimientos de padrón y cava artesanal.",
-                maps: "https://maps.google.com/?q=El+Xampanyet+Barcelona"
-            },
-            {
-                name: "Casa Labra",
-                city: "Madrid",
-                trail: "Pintxos & Tapas",
-                budget: "Mochilero (€6-12)",
-                score: "★ 4.7",
-                img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
-                note: "Sol. Taberna de 1860 especializada en croquetas de bacalao.",
-                maps: "https://maps.google.com/?q=Casa+Labra+Madrid"
-            },
-            {
-                name: "Lokal Dlouhaa",
-                city: "Praga",
-                trail: "Local Classics",
-                budget: "Económico (€10-18)",
-                score: "★ 4.7",
-                img: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
-                note: "Ciudad Vieja. Cervecera tradicional checa con goulash casero y Pilsner de tanque.",
-                maps: "https://maps.google.com/?q=Lokal+Dlouhaa+Prague"
-            },
-            {
-                name: "Get Gulyas",
-                city: "Budapest",
-                trail: "Local Classics",
-                budget: "Económico (€12-20)",
-                score: "★ 4.8",
-                img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
-                note: "Barrio Judío. La sopa Goulash tradicional húngara y pörkölt artesanal.",
-                maps: "https://maps.google.com/?q=Get+Gulyas+Budapest"
-            },
-            {
-                name: "Konoba Kamenice",
-                city: "Dubrovnik",
-                trail: "Wine & Bites",
-                budget: "Medio (€20-35)",
-                score: "★ 4.7",
-                img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
-                note: "Old Town. Mariscos frescos del Adriático, calamares a la parrilla y ostras.",
-                maps: "https://maps.google.com/?q=Konoba+Kamenice+Dubrovnik"
-            }
+        const database = [
+            // BARCELONA
+            { name: "Can Paixano (La Xampanyeria)", city: "Barcelona", style: "Callejero / Rápido", price: 12, rating: "4.5", desc: "Bocadillos de lomo/queso acompañados de cava de la casa." },
+            { name: "El Xampanyet", city: "Barcelona", style: "Local / Tradicional", price: 22, rating: "4.6", desc: "Anchoas del Cantábrico, cava casero y tapas emblemáticas." },
+            { name: "Ciutat Comtal", city: "Barcelona", style: "Local / Tradicional", price: 26, rating: "4.5", desc: "Montaditos frescos y solomillo con foie al momento." },
+            { name: "Disfrutar", city: "Barcelona", style: "Alta Cocina", price: 65, rating: "4.9", desc: "Técnicas de vanguardia reconocidas internacionalmente." },
+
+            // PARÍS
+            { name: "L'As du Fallafel", city: "París", style: "Callejero / Rápido", price: 12, rating: "4.9", desc: "El pita falafel legendario de Le Marais." },
+            { name: "Bouillon Chartier", city: "París", style: "Bistró / Casual", price: 18, rating: "4.6", desc: "Bistró clásico Belle Époque a precios increíbles." },
+            { name: "Le Relais de l'Entrecôte", city: "París", style: "Local / Tradicional", price: 32, rating: "4.7", desc: "Famoso steak frites con salsa secreta." },
+            { name: "L'Arpège", city: "París", style: "Alta Cocina", price: 75, rating: "4.8", desc: "Alta gastronomía vegetal francesa de tres estrellas." },
+
+            // LYON
+            { name: "La Marquise", city: "Lyon", style: "Callejero / Rápido", price: 8, rating: "4.8", desc: "Brioche Praluline de pralinés rosa." },
+            { name: "Bouchon Comptoir Brunet", city: "Lyon", style: "Local / Tradicional", price: 28, rating: "4.8", desc: "Bouchon clásico liones con quenelles y charcutería." },
+            { name: "Le Kitchen Café", city: "Lyon", style: "Bistró / Casual", price: 35, rating: "4.7", desc: "Cocina de autor estacional y postres refinados." },
+
+            // BOLOGNA
+            { name: "Osteria dell'Orsa", city: "Bologna", style: "Callejero / Rápido", price: 14, rating: "4.9", desc: "Tagliatelle al Ragù boloñés tradicional en ambiente rústico." },
+            { name: "Sfoglia Rina", city: "Bologna", style: "Bistró / Casual", price: 18, rating: "4.8", desc: "Pasta fresca artesanal elaborada diariamente." },
+            { name: "Trattoria di Via Serra", city: "Bologna", style: "Local / Tradicional", price: 32, rating: "4.9", desc: "Platos tradicionales con productos locales seleccionados." },
+
+            // ROMA
+            { name: "All'Antico Vinaio", city: "Roma", style: "Callejero / Rápido", price: 10, rating: "4.9", desc: "Schiacciata gigante rellena de pistache y porchetta." },
+            { name: "Osteria da Fortunata", city: "Roma", style: "Local / Tradicional", price: 20, rating: "4.9", desc: "Pasta hecha a mano fresca al momento." },
+            { name: "Roscioli Salumeria", city: "Roma", style: "Bistró / Casual", price: 42, rating: "4.8", desc: "Carbonara icónica y tabla de quesos y embutidos de alta gama." },
+
+            // SAN SEBASTIÁN
+            { name: "La Viña", city: "San Sebastián", style: "Callejero / Rápido", price: 8, rating: "4.9", desc: "Famosa Tarta de Queso Vasca tostada." },
+            { name: "Bar Ganbara", city: "San Sebastián", style: "Local / Tradicional", price: 28, rating: "4.9", desc: "Hongos silvestres con yema de huevo y pintxos de autor." },
+            { name: "Arzak", city: "San Sebastián", style: "Alta Cocina", price: 75, rating: "4.9", desc: "Alta cocina vasca de investigación vanguardista." },
+
+            // MADRID
+            { name: "Casa Labra", city: "Madrid", style: "Callejero / Rápido", price: 9, rating: "4.7", desc: "Croquetas y tajadas de bacalao rebozado desde 1860." },
+            { name: "Bodegas El Maño", city: "Madrid", style: "Local / Tradicional", price: 22, rating: "4.6", desc: "Tapas madrileñas caseras y cañas bien tiradas." },
+            { name: "DiverXO", city: "Madrid", style: "Alta Cocina", price: 80, rating: "4.9", desc: "Experiencia gastronómica rompedora y surrealista." }
         ];
 
-        function setTrail(element, trailName) {
+        function setStyle(element, styleName) {
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
-            selectedTrail = trailName;
-            filterData();
+            selectedStyle = styleName;
+            updateApp();
         }
 
-        function renderCards(items) {
-            const container = document.getElementById('cardsContainer');
-            container.innerHTML = '';
+        function updateApp() {
+            const city = document.getElementById('citySelect').value;
+            const maxBudget = parseInt(document.getElementById('budgetSlider').value);
+            document.getElementById('budgetValue').innerText = maxBudget + " €";
 
-            if (!items || items.length === 0) {
-                container.innerHTML = '<div class="no-results">No se encontraron lugares con los filtros seleccionados.</div>';
-                return;
+            const filtered = database.filter(item => {
+                const matchCity = item.city === city;
+                const matchStyle = selectedStyle === 'Todos' || item.style === selectedStyle;
+                return matchCity && matchStyle;
+            });
+
+            const accessible = filtered.filter(item => item.price <= maxBudget);
+            
+            // Métricas
+            document.getElementById('accessibleCount').innerText = `${accessible.length}/${filtered.length}`;
+            
+            const avg = accessible.length > 0 
+                ? Math.round(accessible.reduce((sum, item) => sum + item.price, 0) / accessible.length)
+                : 0;
+            document.getElementById('avgCost').innerText = avg + " €";
+
+            const daily = avg > 0 ? (avg * 2.2).toFixed(0) : 0;
+            document.getElementById('dailyImpact').innerText = `${daily} €/día`;
+
+            // Renderizado de tarjetas
+            const listContainer = document.getElementById('spotsList');
+            listContainer.innerHTML = '';
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = '<div style="text-align:center; color: var(--text-secondary); padding: 20px;">No hay lugares en esta categoría.</div>';
+            } else {
+                filtered.forEach(item => {
+                    const isWithin = item.price <= maxBudget;
+                    const card = document.createElement('div');
+                    card.className = `spot-card ${isWithin ? 'within-budget' : 'exceeds-budget'}`;
+                    
+                    card.innerHTML = `
+                        <div class="spot-header">
+                            <div class="spot-name">${item.name}</div>
+                            <span class="budget-tag ${isWithin ? 'within' : 'exceeds'}">
+                                ${isWithin ? 'Dentro de presupuesto' : 'Excede presupuesto'}
+                            </span>
+                        </div>
+                        <div class="spot-sub">
+                            <span class="rating">★ ${item.rating}</span> • <span>${item.style}</span>
+                        </div>
+                        <div class="spot-desc">${item.desc}</div>
+                        <div class="spot-footer">
+                            <div class="spot-price">${item.price} €</div>
+                            <div class="spot-impact">Impacto aprox: ~${(item.price * 2.2).toFixed(0)}€/día</div>
+                        </div>
+                    `;
+                    listContainer.appendChild(card);
+                });
             }
 
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <img src="${item.img}" class="card-image" alt="${item.name}">
-                    <div class="card-content">
-                        <div class="card-top">
-                            <h2 class="card-title">${item.name}</h2>
-                            <div class="badge-group">
-                                <span class="badge badge-score">${item.score}</span>
-                                <span class="badge badge-budget">${item.budget}</span>
-                            </div>
-                        </div>
-                        <div class="card-city">📍 ${item.city} • ${item.trail}</div>
-                        <p class="card-description">${item.note}</p>
-                        <a href="${item.maps}" target="_blank" class="btn-maps">🗺️ Abrir en Google Maps</a>
-                    </div>
-                `;
-                container.appendChild(card);
+            // Actualizar Gráfica
+            renderChart(filtered, maxBudget);
+        }
+
+        function renderChart(data, maxBudget) {
+            const ctx = document.getElementById('costChart').getContext('2d');
+            
+            const labels = data.map(item => item.name.length > 12 ? item.name.substring(0, 10) + '...' : item.name);
+            const prices = data.map(item => item.price);
+            const backgroundColors = data.map(item => item.price <= maxBudget ? '#60a5fa' : '#94a3b8');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: prices,
+                        backgroundColor: backgroundColors,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.raw} €`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#aaaaaa', font: { size: 10 } },
+                            grid: { display: false }
+                        },
+                        y: {
+                            ticks: { color: '#aaaaaa', font: { size: 10 } },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
             });
         }
 
-        function filterData() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const selectedCity = document.getElementById('citySelect').value;
-
-            const filtered = foodData.filter(item => {
-                const matchesQuery = !query || 
-                                     item.name.toLowerCase().includes(query) ||
-                                     item.note.toLowerCase().includes(query) ||
-                                     item.city.toLowerCase().includes(query) ||
-                                     item.trail.toLowerCase().includes(query);
-
-                const matchesCity = !selectedCity || item.city === selectedCity;
-                const matchesTrail = !selectedTrail || item.trail === selectedTrail;
-
-                return matchesQuery && matchesCity && matchesTrail;
-            });
-
-            renderCards(filtered);
-        }
-
-        // Renderizado automático
-        renderCards(foodData);
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', updateApp);
+        updateApp();
     </script>
 </body>
 </html>
