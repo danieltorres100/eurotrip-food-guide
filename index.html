@@ -11,6 +11,7 @@
             --text: #f8fafc;
             --accent: #f59e0b;
             --subtext: #94a3b8;
+            --border: #334155;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -22,34 +23,44 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
         h1 {
-            font-size: 24px;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 26px;
+            margin: 0;
+            color: #ffffff;
         }
         p.subtitle {
             color: var(--subtext);
             font-size: 14px;
-            margin-top: 0;
-            margin-bottom: 20px;
+            margin-top: 4px;
         }
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 20px;
+            position: sticky;
+            top: 10px;
+            z-index: 10;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 10px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
         }
         input, select {
             background-color: var(--card-bg);
-            border: 1px solid #334155;
+            border: 1px solid var(--border);
             color: var(--text);
             padding: 12px;
             border-radius: 8px;
             font-size: 15px;
             width: 100%;
             box-sizing: border-box;
+            outline: none;
         }
         .grid {
             display: flex;
@@ -58,55 +69,75 @@
         }
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        .card-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .card-body {
             padding: 16px;
-            border: 1px solid #334155;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            margin-bottom: 8px;
         }
         .card-title {
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 19px;
+            font-weight: 700;
             margin: 0;
+            color: #ffffff;
+        }
+        .badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
         }
         .badge {
             background-color: #3b82f6;
             color: white;
             font-size: 11px;
-            padding: 3px 8px;
+            padding: 4px 8px;
             border-radius: 12px;
             font-weight: 600;
         }
         .badge-budget {
             background-color: #10b981;
         }
+        .badge-score {
+            background-color: #8b5cf6;
+        }
         .city {
             color: var(--accent);
             font-size: 13px;
             font-weight: 600;
-            margin-top: 4px;
+            margin-bottom: 8px;
         }
         .note {
-            color: var(--subtext);
+            color: #cbd5e1;
             font-size: 14px;
-            margin: 12px 0;
-            line-height: 1.4;
+            margin: 10px 0 16px 0;
+            line-height: 1.5;
         }
         .btn-maps {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             background-color: #e11d48;
             color: white;
             text-decoration: none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 13px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 600;
             width: 100%;
             box-sizing: border-box;
@@ -116,17 +147,22 @@
 </head>
 <body>
 
-    <h1>🥐 Eurotrip Food Guide</h1>
-    <p class="subtitle">Tus recomendaciones gastronómicas en Europa</p>
+    <div class="header">
+        <h1>🥐 Eurotrip Food Guide</h1>
+        <p class="subtitle">Guía de joyas gastronómicas por Europa</p>
+    </div>
 
     <div class="controls">
-        <input type="text" id="searchInput" placeholder="Buscar por nombre o nota..." oninput="filterSpots()">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar platillo, lugar o nota..." oninput="filterSpots()">
         <select id="cityFilter" onchange="filterSpots()">
-            <option value="">Todas las ciudades</option>
-            <option value="París">París</option>
-            <option value="Lyon">Lyon</option>
-            <option value="Barcelona">Barcelona</option>
-            <option value="Madrid">Madrid</option>
+            <option value="">🌍 Todas las ciudades</option>
+            <option value="París">París 🇫🇷</option>
+            <option value="Lyon">Lyon 🇫🇷</option>
+            <option value="Bologna">Bolonia 🇮🇹</option>
+            <option value="Donostia-San Sebastián">Donostia-San Sebastián 🇪🇸</option>
+            <option value="Barcelona">Barcelona 🇪🇸</option>
+            <option value="Madrid">Madrid 🇪🇸</option>
+            <option value="Ginebra">Ginebra 🇨🇭</option>
         </select>
     </div>
 
@@ -139,24 +175,70 @@
                 city: "París",
                 budget: "Mochilero (€10-15)",
                 type: "Street Food",
-                note: "El falafel más famoso en el barrio Le Marais. Imperdible.",
+                score: "★ 4.8",
+                img: "https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?auto=format&fit=crop&w=600&q=80",
+                note: "El pita falafel legendario en el corazón de Le Marais. Rápido, abundante e insuperable.",
                 maps: "https://maps.google.com/?q=L'As+du+Fallafel+Paris"
             },
             {
                 name: "Café de Flore",
                 city: "París",
                 budget: "Medio (€20-30)",
-                type: "Cafetería / Tradicional",
-                note: "Un clásico histórico para tomar un café y croissant con gran ambiente.",
+                type: "Café & Pastelería",
+                score: "★ 4.5",
+                img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80",
+                note: "Ícono parisino en Saint-Germain-des-Prés. Ideal para chocolate caliente y croissants con vista.",
                 maps: "https://maps.google.com/?q=Cafe+de+Flore+Paris"
+            },
+            {
+                name: "Osteria dell'Orsa",
+                city: "Bologna",
+                budget: "Mochilero (€12-18)",
+                type: "Pasta Fresca / Taverna",
+                score: "★ 4.9",
+                img: "https://images.unsplash.com/photo-1621996346565-e3d5d6281288?auto=format&fit=crop&w=600&q=80",
+                note: "La auténtica Tagliatelle al Ragù boloñés en ambiente universitario y rústico.",
+                maps: "https://maps.google.com/?q=Osteria+dell'Orsa+Bologna"
+            },
+            {
+                name: "Bar Ganbara",
+                city: "Donostia-San Sebastián",
+                budget: "Medio (€20-35)",
+                type: "Pintxos & Vino",
+                score: "★ 4.9",
+                img: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80",
+                note: "Referente absoluto de pintxos en la Parte Vieja. Hongos con yema de huevo y tarta de queso.",
+                maps: "https://maps.google.com/?q=Bar+Ganbara+San+Sebastian"
             },
             {
                 name: "Bouchon Comptoir Brunet",
                 city: "Lyon",
                 budget: "Medio (€25-35)",
-                type: "Comida Tradicional",
-                note: "Comida auténtica lionesa en un ambiente clásico e íntimo.",
+                type: "Tradicional Lionesa",
+                score: "★ 4.7",
+                img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
+                note: "Bouchon histórico en la capital gastronómica de Francia. Quenelles de brochet imperdibles.",
                 maps: "https://maps.google.com/?q=Comptoir+Brunet+Lyon"
+            },
+            {
+                name: "El Xampanyet",
+                city: "Barcelona",
+                budget: "Económico (€15-25)",
+                type: "Tapas & Cava",
+                score: "★ 4.8",
+                img: "https://images.unsplash.com/photo-1515443961218-a51367888e4b?auto=format&fit=crop&w=600&q=80",
+                note: "Taberna tradicional en El Born. Anchoas de la escala, mariscos en conserva y cava de la casa.",
+                maps: "https://maps.google.com/?q=El+Xampanyet+Barcelona"
+            },
+            {
+                name: "Casa Labra",
+                city: "Madrid",
+                budget: "Mochilero (€5-12)",
+                type: "Tapas / Taberna",
+                score: "★ 4.7",
+                img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
+                note: "Famosa por sus tajadas de bacalao rebozado y croquetas desde 1860, al lado de Sol.",
+                maps: "https://maps.google.com/?q=Casa+Labra+Madrid"
             }
         ];
 
@@ -165,7 +247,7 @@
             container.innerHTML = '';
             
             if(data.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color: var(--subtext);">No se encontraron lugares.</p>';
+                container.innerHTML = '<p style="text-align:center; color: var(--subtext); padding: 40px 0;">No se encontraron lugares con esos filtros.</p>';
                 return;
             }
 
@@ -173,15 +255,19 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <div class="card-header">
-                        <div>
+                    <img src="${spot.img}" class="card-img" alt="${spot.name}">
+                    <div class="card-body">
+                        <div class="card-header">
                             <h2 class="card-title">${spot.name}</h2>
-                            <div class="city">📍 ${spot.city} • ${spot.type}</div>
+                            <div class="badges">
+                                <span class="badge badge-score">${spot.score}</span>
+                                <span class="badge badge-budget">${spot.budget}</span>
+                            </div>
                         </div>
-                        <span class="badge badge-budget">${spot.budget}</span>
+                        <div class="city">📍 ${spot.city} • ${spot.type}</div>
+                        <p class="note">${spot.note}</p>
+                        <a href="${spot.maps}" target="_blank" class="btn-maps">🗺️ Abrir en Google Maps</a>
                     </div>
-                    <p class="note">${spot.note}</p>
-                    <a href="${spot.maps}" target="_blank" class="btn-maps">🗺️ Abrir en Google Maps</a>
                 `;
                 container.appendChild(card);
             });
@@ -192,7 +278,9 @@
             const city = document.getElementById('cityFilter').value;
 
             const filtered = spots.filter(s => {
-                const matchesSearch = s.name.toLowerCase().includes(search) || s.note.toLowerCase().includes(search);
+                const matchesSearch = s.name.toLowerCase().includes(search) || 
+                                      s.note.toLowerCase().includes(search) ||
+                                      s.type.toLowerCase().includes(search);
                 const matchesCity = city === "" || s.city === city;
                 return matchesSearch && matchesCity;
             });
