@@ -277,10 +277,10 @@
             <label class="field-label">Ciudad de destino</label>
             <select id="citySelect" onchange="updateApp()">
                 <option value="Barcelona">Barcelona (España)</option>
+                <option value="Roma">Roma (Italia)</option>
                 <option value="París">París (Francia)</option>
                 <option value="Lyon">Lyon (Francia)</option>
                 <option value="Bologna">Bolonia (Italia)</option>
-                <option value="Roma">Roma (Italia)</option>
                 <option value="San Sebastián">San Sebastián (España)</option>
                 <option value="Madrid">Madrid (España)</option>
             </select>
@@ -341,6 +341,11 @@
             { name: "Ciutat Comtal", city: "Barcelona", style: "Local / Tradicional", price: 26, rating: "4.5", desc: "Montaditos frescos y solomillo con foie al momento." },
             { name: "Disfrutar", city: "Barcelona", style: "Alta Cocina", price: 65, rating: "4.9", desc: "Técnicas de vanguardia reconocidas internacionalmente." },
 
+            // ROMA
+            { name: "All'Antico Vinaio", city: "Roma", style: "Callejero / Rápido", price: 10, rating: "4.9", desc: "Schiacciata gigante rellena de pistache, porchetta y stracciatella." },
+            { name: "Osteria da Fortunata", city: "Roma", style: "Local / Tradicional", price: 20, rating: "4.9", desc: "Pasta hecha a mano fresca en el momento. Carbonara y Amatriciana brutales." },
+            { name: "Roscioli Salumeria", city: "Roma", style: "Bistró / Casual", price: 42, rating: "4.8", desc: "Carbonara icónica y tabla de quesos y embutidos de alta gama." },
+
             // PARÍS
             { name: "L'As du Fallafel", city: "París", style: "Callejero / Rápido", price: 12, rating: "4.9", desc: "El pita falafel legendario de Le Marais." },
             { name: "Bouillon Chartier", city: "París", style: "Bistró / Casual", price: 18, rating: "4.6", desc: "Bistró clásico Belle Époque a precios increíbles." },
@@ -357,11 +362,6 @@
             { name: "Sfoglia Rina", city: "Bologna", style: "Bistró / Casual", price: 18, rating: "4.8", desc: "Pasta fresca artesanal elaborada diariamente." },
             { name: "Trattoria di Via Serra", city: "Bologna", style: "Local / Tradicional", price: 32, rating: "4.9", desc: "Platos tradicionales con productos locales seleccionados." },
 
-            // ROMA
-            { name: "All'Antico Vinaio", city: "Roma", style: "Callejero / Rápido", price: 10, rating: "4.9", desc: "Schiacciata gigante rellena de pistache y porchetta." },
-            { name: "Osteria da Fortunata", city: "Roma", style: "Local / Tradicional", price: 20, rating: "4.9", desc: "Pasta hecha a mano fresca al momento." },
-            { name: "Roscioli Salumeria", city: "Roma", style: "Bistró / Casual", price: 42, rating: "4.8", desc: "Carbonara icónica y tabla de quesos y embutidos de alta gama." },
-
             // SAN SEBASTIÁN
             { name: "La Viña", city: "San Sebastián", style: "Callejero / Rápido", price: 8, rating: "4.9", desc: "Famosa Tarta de Queso Vasca tostada." },
             { name: "Bar Ganbara", city: "San Sebastián", style: "Local / Tradicional", price: 28, rating: "4.9", desc: "Hongos silvestres con yema de huevo y pintxos de autor." },
@@ -370,7 +370,7 @@
             // MADRID
             { name: "Casa Labra", city: "Madrid", style: "Callejero / Rápido", price: 9, rating: "4.7", desc: "Croquetas y tajadas de bacalao rebozado desde 1860." },
             { name: "Bodegas El Maño", city: "Madrid", style: "Local / Tradicional", price: 22, rating: "4.6", desc: "Tapas madrileñas caseras y cañas bien tiradas." },
-            { name: "DiverXO", city: "Madrid", style: "Alta Cocina", price: 80, rating: "4.9", desc: "Experiencia gastronómica rompedora y surrealista." }
+            { name: "DiverXO", city: "Madrid", style: "Alta Cocina", price: 80, rating: "4.9", desc: "Experiencia gastronomica rompedora y surrealista." }
         ];
 
         function setStyle(element, styleName) {
