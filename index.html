@@ -184,16 +184,34 @@
 
     <div class="sticky-tools">
         <div class="controls">
-            <input type="text" id="searchInput" placeholder="🔍 Buscar barrio, platillo o lugar..." oninput="filterSpots()">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar ciudad, platillo o lugar..." oninput="filterSpots()">
             <select id="cityFilter" onchange="filterSpots()">
-                <option value="">🌍 Todas las ciudades</option>
+                <option value="">🌍 Todas las ciudades de Europa</option>
+                <!-- FRANCIA & SUIZA -->
                 <option value="París">París 🇫🇷</option>
                 <option value="Lyon">Lyon 🇫🇷</option>
+                <option value="Ginebra">Ginebra 🇨🇭</option>
+                <!-- BÉLGICA -->
+                <option value="Bruselas">Bruselas 🇧🇪</option>
+                <option value="Brujas">Brujas 🇧🇪</option>
+                <!-- ITALIA -->
+                <option value="Roma">Roma 🇮🇹</option>
                 <option value="Bologna">Bolonia 🇮🇹</option>
-                <option value="Donostia-San Sebastián">Donostia-San Sebastián 🇪🇸</option>
+                <option value="Florencia">Florencia 🇮🇹</option>
+                <option value="Milán">Milán 🇮🇹</option>
+                <option value="Venecia">Venecia 🇮🇹</option>
+                <option value="Nápoles">Nápoles 🇮🇹</option>
+                <!-- ESPAÑA -->
                 <option value="Barcelona">Barcelona 🇪🇸</option>
                 <option value="Madrid">Madrid 🇪🇸</option>
-                <option value="Ginebra">Ginebra 🇨🇭</option>
+                <option value="Donostia-San Sebastián">Donostia-San Sebastián 🇪🇸</option>
+                <option value="Sevilla">Sevilla 🇪🇸</option>
+                <!-- EUROPA CENTRAL & CROACIA -->
+                <option value="Praga">Praga 🇨🇿</option>
+                <option value="Budapest">Budapest 🇭🇺</option>
+                <option value="Cracovia">Cracovia / Varsovia 🇵🇱</option>
+                <option value="Zagreb">Zagreb 🇭🇷</option>
+                <option value="Dubrovnik">Dubrovnik 🇭🇷</option>
             </select>
         </div>
 
@@ -202,9 +220,10 @@
             <div class="chip active" onclick="selectTrail(this, '')">Todos</div>
             <div class="chip" onclick="selectTrail(this, 'Fresh Pasta')">🍝 Fresh Pasta</div>
             <div class="chip" onclick="selectTrail(this, 'Warm Pastries')">🥐 Warm Pastries</div>
-            <div class="chip" onclick="selectTrail(this, 'Pintxos Crawl')">🍢 Pintxos Crawl</div>
+            <div class="chip" onclick="selectTrail(this, 'Pintxos & Tapas')">🍢 Pintxos & Tapas</div>
             <div class="chip" onclick="selectTrail(this, 'Wine & Bites')">🍷 Wine & Bites</div>
             <div class="chip" onclick="selectTrail(this, 'Street Food')">🥙 Street Food</div>
+            <div class="chip" onclick="selectTrail(this, 'Local Classics')">🍲 Local Classics</div>
         </div>
     </div>
 
@@ -222,7 +241,7 @@
                 budget: "Mochilero (€10-15)",
                 score: "★ 4.9",
                 img: "https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?auto=format&fit=crop&w=600&q=80",
-                note: "Barrio Le Marais. El falafel en pan pita más legendario de Europa. Rápido y brutal.",
+                note: "Barrio Le Marais. El falafel en pita legendario. Imperdible en París.",
                 maps: "https://maps.google.com/?q=L'As+du+Fallafel+Paris"
             },
             {
@@ -232,17 +251,17 @@
                 budget: "Económico (€4-8)",
                 score: "★ 4.9",
                 img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80",
-                note: "Canal Saint-Martin. Croissants imperdibles y su especialidad: el 'Escargot' de pistache y chocolate.",
+                note: "Canal Saint-Martin. Panadería artesanal famosa por su Escargot de pistache y chocolate.",
                 maps: "https://maps.google.com/?q=Du+Pain+et+des+Idees+Paris"
             },
             {
                 name: "Bouillon Chartier",
                 city: "París",
-                trail: "Wine & Bites",
+                trail: "Local Classics",
                 budget: "Económico (€15-22)",
                 score: "★ 4.6",
                 img: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80",
-                note: "Grands Boulevards. Histórico bistró estilo Belle Époque con comida francesa clásica a precios imbatibles.",
+                note: "Grands Boulevards. Bistró histórico Belle Époque con comida tradicional a precios accesibles.",
                 maps: "https://maps.google.com/?q=Bouillon+Chartier+Paris"
             },
 
@@ -254,18 +273,74 @@
                 budget: "Medio (€25-35)",
                 score: "★ 4.8",
                 img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-                note: "Presqu'île. Bouchon clásico y auténtico. Pide las quenelles de brochet y salchichón lyonnais.",
+                note: "Presqu'île. Bouchon clásico liones. Quenelles de brochet y gran selección de vinos.",
                 maps: "https://maps.google.com/?q=Comptoir+Brunet+Lyon"
             },
             {
-                name: "La Marquise (Praluline)",
+                name: "La Marquise",
                 city: "Lyon",
                 trail: "Warm Pastries",
                 budget: "Económico (€5-10)",
                 score: "★ 4.8",
                 img: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80",
-                note: "Vieux Lyon. El brioche tradicional cargado de pralinés rosa crujientes. Adictivo.",
+                note: "Vieux Lyon. El lugar para probar la tradicional Praluline (brioche con pralinés rosas).",
                 maps: "https://maps.google.com/?q=La+Marquise+Vieux+Lyon"
+            },
+
+            // GINEBRA
+            {
+                name: "Les Armures",
+                city: "Ginebra",
+                trail: "Local Classics",
+                budget: "Medio (€35-50)",
+                score: "★ 4.7",
+                img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80",
+                note: "Vieille Ville. La mejor fondue suiza tradicional de queso gruyère y vacherin.",
+                maps: "https://maps.google.com/?q=Les+Armures+Geneva"
+            },
+
+            // BRUSELAS
+            {
+                name: "Maison Dandoy",
+                city: "Bruselas",
+                trail: "Warm Pastries",
+                budget: "Económico (€6-12)",
+                score: "★ 4.8",
+                img: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=600&q=80",
+                note: "Cerca de Grand Place. Los auténticos waffles belgas artesanales (Liège y Bruxelles).",
+                maps: "https://maps.google.com/?q=Maison+Dandoy+Brussels"
+            },
+            {
+                name: "Fritland",
+                city: "Bruselas",
+                trail: "Street Food",
+                budget: "Mochilero (€5-9)",
+                score: "★ 4.6",
+                img: "https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=600&q=80",
+                note: "Centro. Papas fritas belgas con salsa andaluza y la famosa Mitraillette.",
+                maps: "https://maps.google.com/?q=Fritland+Brussels"
+            },
+
+            // ROMA
+            {
+                name: "Osteria da Fortunata",
+                city: "Roma",
+                trail: "Fresh Pasta",
+                budget: "Medio (€15-25)",
+                score: "★ 4.9",
+                img: "https://images.unsplash.com/photo-1621996346565-e3d5d6281288?auto=format&fit=crop&w=600&q=80",
+                note: "Campo de' Fiori. Pasta hecha a mano en el momento delante de ti. Carbonara y Amatriciana brutales.",
+                maps: "https://maps.google.com/?q=Osteria+da+Fortunata+Roma"
+            },
+            {
+                name: "All'Antico Vinaio",
+                city: "Roma",
+                trail: "Street Food",
+                budget: "Mochilero (€8-12)",
+                score: "★ 4.9",
+                img: "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80",
+                note: "Cerca del Panteón. Schiacciata toscana gigante rellena de pistache, porchetta y stracciatella.",
+                maps: "https://maps.google.com/?q=Antico+Vinaio+Roma"
             },
 
             // BOLOGNA
@@ -275,30 +350,32 @@
                 trail: "Fresh Pasta",
                 budget: "Mochilero (€12-18)",
                 score: "★ 4.9",
-                img: "https://images.unsplash.com/photo-1621996346565-e3d5d6281288?auto=format&fit=crop&w=600&q=80",
-                note: "Zona Universitaria. La mejor Tagliatelle al Ragù boloñés tradicional en mesas compartidas.",
+                img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80",
+                note: "Zona Universitaria. Tagliatelle al Ragù boloñés de receta tradicional en mesas compartidas.",
                 maps: "https://maps.google.com/?q=Osteria+dell'Orsa+Bologna"
             },
+
+            // FLORENCIA
             {
-                name: "Sfoglia Rina",
-                city: "Bologna",
-                trail: "Fresh Pasta",
-                budget: "Económico (€14-20)",
+                name: "Trattoria Zà Zà",
+                city: "Florencia",
+                trail: "Local Classics",
+                budget: "Medio (€25-40)",
                 score: "★ 4.8",
-                img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80",
-                note: "Centro Storico. Taller artesanal de pasta del día: tortellini en brodo y lasaña boloñesa monumental.",
-                maps: "https://maps.google.com/?q=Sfoglia+Rina+Bologna"
+                img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80",
+                note: "Piazza del Mercato Centrale. El templo de la Bistecca alla Fiorentina y platos con trufa.",
+                maps: "https://maps.google.com/?q=Trattoria+ZaZa+Florence"
             },
 
-            // DONOSTIA-SAN SEBASTIÁN
+            // SAN SEBASTIÁN
             {
                 name: "Bar Ganbara",
                 city: "Donostia-San Sebastián",
-                trail: "Pintxos Crawl",
+                trail: "Pintxos & Tapas",
                 budget: "Medio (€20-35)",
                 score: "★ 4.9",
                 img: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80",
-                note: "Parte Vieja. La meca de los pintxos. Hongos silvestres con yema de huevo y hojaldre de chistorra.",
+                note: "Parte Vieja. Hongos silvestres con yema de huevo y hojaldres de chistorra.",
                 maps: "https://maps.google.com/?q=Bar+Ganbara+San+Sebastian"
             },
             {
@@ -308,7 +385,7 @@
                 budget: "Económico (€6-10)",
                 score: "★ 4.9",
                 img: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80",
-                note: "Parte Vieja. El templo mundial de la Tarta de Queso Vasca tostada al horno.",
+                note: "Parte Vieja. Cuna original de la famosa Tarta de Queso Vasca horneada.",
                 maps: "https://maps.google.com/?q=La+Vina+San+Sebastian"
             },
 
@@ -316,11 +393,11 @@
             {
                 name: "El Xampanyet",
                 city: "Barcelona",
-                trail: "Pintxos Crawl",
+                trail: "Pintxos & Tapas",
                 budget: "Económico (€15-25)",
                 score: "★ 4.8",
                 img: "https://images.unsplash.com/photo-1515443961218-a51367888e4b?auto=format&fit=crop&w=600&q=80",
-                note: "El Born. Taberna histórica con cava propio, anchoas artesanales, pimientos de padrón y gran ambiente.",
+                note: "El Born. Anchoas de la escala, pimientos de padrón y cava artesanal de la casa.",
                 maps: "https://maps.google.com/?q=El+Xampanyet+Barcelona"
             },
 
@@ -328,24 +405,48 @@
             {
                 name: "Casa Labra",
                 city: "Madrid",
-                trail: "Street Food",
+                trail: "Pintxos & Tapas",
                 budget: "Mochilero (€6-12)",
                 score: "★ 4.7",
                 img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
-                note: "A pasos de Puerta del Sol. Croquetas de bacalao y tajadas rebozadas desde 1860.",
+                note: "Sol. Taberna de 1860 especializada en croquetas de bacalao y tajadas rebozadas.",
                 maps: "https://maps.google.com/?q=Casa+Labra+Madrid"
             },
 
-            // GINEBRA
+            // PRAGA
             {
-                name: "Les Armures",
-                city: "Ginebra",
-                trail: "Wine & Bites",
-                budget: "Medio/Alto (€35-50)",
+                name: "Lokal Dlouhááá",
+                city: "Praga",
+                trail: "Local Classics",
+                budget: "Económico (€10-18)",
                 score: "★ 4.7",
-                img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80",
-                note: "Vieille Ville. La fondue de queso gruyère y vacherin más famosa de Ginebra en un entorno histórico.",
-                maps: "https://maps.google.com/?q=Les+Armures+Geneva"
+                img: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
+                note: "Ciudad Vieja. Cervecera tradicional checa con goulash casero, Svíčková y Pilsner Urquell de tanque.",
+                maps: "https://maps.google.com/?q=Lokal+Dlouhaa+Prague"
+            },
+
+            // BUDAPEST
+            {
+                name: "Gét Gulyás",
+                city: "Budapest",
+                trail: "Local Classics",
+                budget: "Económico (€12-20)",
+                score: "★ 4.8",
+                img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80",
+                note: "Barrio Judío. La sopa Goulash tradicional húngara y pörkölt preparado de forma artesanal.",
+                maps: "https://maps.google.com/?q=Get+Gulyas+Budapest"
+            },
+
+            // CROACIA (DUBROVNIK / ZAGREB)
+            {
+                name: "Konoba Kamenice",
+                city: "Dubrovnik",
+                trail: "Wine & Bites",
+                budget: "Medio (€20-35)",
+                score: "★ 4.7",
+                img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80",
+                note: "Old Town. Mariscos frescos del Adriático, calamares a la parrilla y ostras locales.",
+                maps: "https://maps.google.com/?q=Konoba+Kamenice+Dubrovnik"
             }
         ];
 
@@ -361,7 +462,7 @@
             container.innerHTML = '';
             
             if(data.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color: var(--subtext); padding: 40px 0;">No hay lugares que coincidan con la búsqueda.</p>';
+                container.innerHTML = '<p style="text-align:center; color: var(--subtext); padding: 40px 0;">No hay lugares registrados para esta selección.</p>';
                 return;
             }
 
@@ -393,18 +494,4 @@
 
             const filtered = spots.filter(s => {
                 const matchesSearch = s.name.toLowerCase().includes(search) || 
-                                      s.note.toLowerCase().includes(search) ||
-                                      s.city.toLowerCase().includes(search);
-                const matchesCity = city === "" || s.city === city;
-                const matchesTrail = currentTrail === "" || s.trail === currentTrail;
-
-                return matchesSearch && matchesCity && matchesTrail;
-            });
-
-            renderSpots(filtered);
-        }
-
-        renderSpots(spots);
-    </script>
-</body>
-</html>
+                                      s.note.toLowerCase().i
